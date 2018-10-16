@@ -16,6 +16,7 @@ class NotaRemision extends CI_Model {
     public function __construct() {
         parent::__construct();
         
+        //Comentario
         $this->load->model('NotaRemision_Model');
         $this->load->helper('url_helper');
     }
