@@ -1,0 +1,1 @@
+<h1>Registrar Nueva Salida</h1>
