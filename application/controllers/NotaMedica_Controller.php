@@ -39,12 +39,12 @@ class NotaMedica_Controller extends CI_Controller {
         $result = $this->NotaMedica_Model->ConsultarUltimaNotaMedicaPorPaciente($IdPaciente,$IdServicio);
         //Cargar Información del Paciente
         
-        CargarInformacionPaciente();
+        $this->CargarInformacionPaciente($IdPaciente);
         
         
     }    
     
-        private function CargarInformacionPaciente()
+        private function CargarInformacionPaciente($IdPaciente)
     {
         $paciente = $this->Paciente_Model->ConsultarPaciente($IdPaciente);
             
@@ -55,7 +55,7 @@ class NotaMedica_Controller extends CI_Controller {
         {
                 $data['paciente'] = $paciente;
                 $data['title'] = 'Datos Paciente';
-                $this->load->view('templates/header',$data);
+               // $this->load->view('templates/header',$data);
                 $this->load->view('NotaMedica/SeccionPaciente',$data);
         }
         else 
