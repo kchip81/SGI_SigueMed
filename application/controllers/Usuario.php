@@ -18,6 +18,8 @@ class Usuario extends CI_Controller {
         parent::__construct();
         $this->load->model('Usuario_Model');
         $this->load->helper('url_helper');
+        // Load session library
+        $this->load->library('session');
     }
     
     /*

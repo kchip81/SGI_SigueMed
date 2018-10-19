@@ -39,50 +39,7 @@ class Usuario_Login extends CI_Controller {
        $this->load->view('Login/login_form');
     }
     
-    public function RegistrarUsuario_Cargar()
-    {
-        //Carga la pagina de la forma de registro de nuevo usuario
-        $this->load->view('registroNuevoUsuario_form');
-    }
-    
-    public function RegistrarNuevoUsuario()
-    {
-        
-        // Asignar validaciones para el registro de un nuevo usuario
-        $this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('email_value', 'Email', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
-        if ($this->form_validation->run() == FALSE) 
-        {
-                $this->load->view('registration_form');
-        }
-        else 
-        {
-               
-            $data = array(
-            'usuario' => $this->input->post('usuario'),
-            'contrasena' => $this->input->post('contrasena')
-            );
-                
-            //llamar el modelo para insertar nuevo usuario
-            $result = $this->login_database->registration_insert($data);
-            if ($result == TRUE) 
-            {
-
-                $data['message_display'] = 'Registration Successfully !';
-                $this->load->view('login_form', $data);
-                    
-            }
-                
-            else 
-            {
-                $data['message_display'] = 'Username already exist!';
-                $this->load->view('registration_form', $data);
-            }
-        }
-    }
-
-    public function LoginUsuario_Proceso()
+    public function LoginUsuario()
     {
 
         $this->form_validation->set_rules('username', 'Username', 'required');
@@ -96,8 +53,9 @@ class Usuario_Login extends CI_Controller {
             }
             else
             {
-                
+
                 $this->load->view('Login/login_form');
+                $this->load->view('templates/footer');
                 
             }
         } 
@@ -122,6 +80,7 @@ class Usuario_Login extends CI_Controller {
                     $session_data = array(
                     'username' => $result[0]->usuario,
                     'IdPerfil' => $result[0]->IdPerfilUsuario,
+                    'logged_in' => TRUE,
                     );
                     // Add user data in session
                     $this->session->set_userdata('logged_in', $session_data);
@@ -130,18 +89,20 @@ class Usuario_Login extends CI_Controller {
                 else
                 {
                     $data = array(
-                'error_message' => 'Error al leer el usuario'
-                );
-                $this->load->view('Login/login_form', $data);
+                    'error_message' => 'Error al leer el usuario');
+                    
+                    $this->load->view('Login/login_form', $data);
                     
                 }
             } 
             else 
             {
                 $data = array(
-                'error_message' => 'Invalid Username or Password'
+                'error_message' => 'Usuario y/o Contraseña Incorrectos'
                 );
+          
                 $this->load->view('Login/login_form', $data);
+                $this->load->view('templates/footer');
             }
         }       
     }

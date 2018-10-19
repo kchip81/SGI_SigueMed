@@ -1,27 +1,31 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-    <?php
-    $this->load->helper('url');
-    if ($this->session->has_userdata('logged_in')) {
+<!doctype html>
+<html class="no-js" lang="">
 
-    header("location: http://localhost/SGI_SigueMEd/index.php/Usuario_Login/LoginUsuario_Proceso");
+<head>  
+  <!--Validación de Sesión -->
+  <?php
+    $this->load->helper('url');
+    $this->load->library('session');
+    echo 'Hola';
+    if ($this->session->has_userdata('logged_in')==TRUE) {
+        
+        $this->session->unset_userdata('logged_in');
     }
+    
     ?>
-    <head>
-        <!------ Bootstrap ---------->
+  
+  <!------ Bootstrap ---------->
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-        <title>Login Form</title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/style.css">
         <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro|Open+Sans+Condensed:300|Raleway' rel='stylesheet' type='text/css'>
-    </head>
+  
+  <!-- Encabezado  -->
+  <title>Clinica SigueMed</title>
+</head>
+
     <body>
         <?php
             if (isset($logout_message)) {
@@ -57,29 +61,28 @@ and open the template in the editor.
                                     <div class="col-md-4 login-sec">
                                         <h2 class="text-center">Login Now</h2>
                                         <form class="login-form">
-                        <div class="form-group">
+                                            <div class="form-group">
+                                                
+                                                <label for="usuario" class="text-uppercase">Usuario:</label>
+                                                <input type="text" name="username" id="usuario" class="form-control" placeholder="username">
 
+                                            </div>
+                                            <div class="form-group">
 
-                        <label for="usuario" class="text-uppercase">Usuario:</label>
-                        <input type="text" name="username" id="usuario" class="form-control" placeholder="username">
+                                              <label for="password" class="text-uppercase">Contraseña:</label>
+                                              <input type="password" name="password" id="password" class="form-control" placeholder="*********">
+                                              
+                                            </div>
 
-                      </div>
-                      <div class="form-group">
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" class="form-check-input">
+                                                    <small>Recordarme</small>
+                                                </label>
+                                                <input type="submit" value=" Login " name="submit"/><br />
+                                            </div>
 
-                        <label for="password" class="text-uppercase">Contraseña:</label>
-                        <input type="password" name="password" id="password" class="form-control" placeholder="*********">
-                      </div>
-
-
-                        <div class="form-check">
-                        <label class="form-check-label">
-                          <input type="checkbox" class="form-check-input">
-                          <small>Recordarme</small>
-                        </label>
-                            <input type="submit" value=" Login " name="submit"/><br />
-                      </div>
-
-                    </form>
+                                        </form>
                    
                                     </div>
                                     <div class="col-md-8 banner-sec">
@@ -128,6 +131,6 @@ and open the template in the editor.
         </div>
         
     </body>
-</html>
+
 
 

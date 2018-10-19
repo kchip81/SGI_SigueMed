@@ -49,9 +49,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'Usuario_Login/index';
+$route['default_controller'] = 'Usuario_Login/LoginUsuario';
+$route['NotaMedica/NuevaNotaMedica/(.+)/(.+)'] = 'NotaMedica_Controller/NuevaNotaMedica/$1/$2';
 $route['usuario/login'] = 'Usuario/login';
 $route['main/TableroPrincipal'] = 'Usuario/TableroPrincipal';
+
+//Nota Medica
 
 $route['NotaRemision/Registrar'] = 'NotaRemision/Registrar';
 $route['Salida/Registrar'] = 'Salida/Registrar';

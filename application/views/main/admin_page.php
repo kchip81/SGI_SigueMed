@@ -14,7 +14,7 @@ and open the template in the editor.
     } 
     else 
         {
-            header("location: login");
+            redirect("Usuario_Login/login");
         }
     ?>
     <head>

@@ -1,0 +1,46 @@
+.logo{
+	height: 10%;
+	width: 10%;
+	float: left;
+}
+.contenedor{
+	background: gray;
+	width: 950px;
+	height: 1400px;
+	margin-left: 100px;
+	align-content: center;
+	
+}
+
+.contenedor_1{
+	background: gray;
+	width: 650px;
+	height: 160px;
+	margin-left: 100px;
+	float: left;
+	margin: 1px solid;
+	
+}
+.contenedor_2{
+	background: gray;
+	width: 800px;
+	height: 80px;
+	margin-left: 100px;
+	margin: 1px solid;
+}
+.contenedor_3{
+	background: gray;
+	width: 800px;
+	height: 950px;
+	margin-left: 100px;
+	margin: 1px solid;
+}
+
+.box_1{
+	border: 1px solid;
+	float: left;
+}
+.box_2{
+	float: left;
+	border: 1px solid;
+}

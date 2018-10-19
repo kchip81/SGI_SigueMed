@@ -1,0 +1,57 @@
+<?php
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ * Description of Paciente_Model
+ *
+ * @author SigueMed
+ */
+class Paciente_Model extends CI_Model {
+    
+    private $table;
+    public $IdPaciente;
+    public $Nombre;
+    public $Apellidos;
+    
+    
+    public function __construct() {
+        parent::__construct();
+        $this->table = "Paciente";
+        $this->load->database();
+        
+    }
+    
+    private function LoadRow($row)
+    {
+        $this->IdPaciente = $row->IdPaciente;
+        $this->Nombre = $row->Nombre;
+    }
+    public function ConsultarPaciente($IdPaciente)
+    {
+        $condition = "IdPaciente =" . $IdPaciente;
+        $this->db->select('*');
+        $this->db->from($this->table);
+        $this->db->where($condition);
+        $this->db->limit(1);
+        $query = $this->db->get();
+
+        if ($query->num_rows() == 1) 
+        {
+            $row = $query->row();
+            $this->LoadRow($row);
+            return $query->row_array();
+        } 
+        else 
+        {
+            return false;
+        }
+        
+        
+    }
+    //put your code here
+}
