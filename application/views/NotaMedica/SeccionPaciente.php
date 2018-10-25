@@ -13,17 +13,24 @@ and open the template in the editor.
     </head>
     <body>
         <?php
-        // put your code here
+        form_open('NotaMedica_Controller')
         ?>
+        
+        <Table>
+            <tr>
+                <td>Nombre Paciente:</td><td><input type="text" name="nombre" type="text" value=<?php echo $paciente->Nombre;?>/></td>
+                <td>Sexo:</td><td>
+                    <?php $opciones = array('F'=>'Femenino','M'=>'Masculino');
+                    echo form_dropdown('sexo',$opciones);?></td>
+            </tr>
+            <tr>
+                <td>Edad:</td><td>
+                    //<?php ?>
+                </td>
+            </tr>
+        </Table>
         <div class="contenedor_1">
-	<!– Linea 1 —>
-		<div style="width: 150px; height: 25px;" class="box_1"><b>Nombre del paciente:</b></div> 
-                <div style="width: 350px; height: 25px;" class="box_1"><input style="width: 340px; height: 19px;" type="text" value=<?php echo $paciente['Nombre']?>/></div> 
-		<div style="width:  40px; height: 25px;" class="box_1"><b>Sexo:</b></div> 
-		<div style="width:  85px; height: 25px;" class="box_1"> 
-			<select><option value="Femenino">Femenino</option><option value="Masculino">Masculino</option></select> 
-		</div>
-		<br>
+	
 	<!– Linea 2 —>
 		<div style="width:  50px; height: 25px; border: 1px solid;" class="box_1"><b>Edad:</b></div>
 		<div style="width:  50px; height: 15px; border: 1px solid;" class="box_1"><input style="width: 40px; height: 11px;" type="text"/></div>

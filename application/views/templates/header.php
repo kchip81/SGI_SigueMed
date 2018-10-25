@@ -26,6 +26,10 @@
         echo $this->session->userdata('logged_in');
         redirect("Usuario_Login/LoginUsuario_Proceso");
     }
+    else
+    {
+        echo $this->session->has_userdata('logged_in');
+    }
     ?>
   
   <!------ Bootstrap ---------->

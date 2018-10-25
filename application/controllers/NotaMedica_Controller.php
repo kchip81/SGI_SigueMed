@@ -24,6 +24,7 @@ class NotaMedica_Controller extends CI_Controller {
         //Cargar Modelos usados por el Controlador para el manejo de las Notas Medicas
         $this->load->model('NotaMedica_Model');
         $this->load->model('Paciente_Model');
+        $this->load->model('CitaServicio_Model');
         
     }
     
@@ -31,24 +32,21 @@ class NotaMedica_Controller extends CI_Controller {
      * Function: NuevaNotaMedica
      * Description: La función recibirá el Id del Paciente y del servicio para mostrar el formato NotaMedica.php para la creación de una nueva nota
      */
-    public function NuevaNotaMedica($IdPaciente,$IdServicio)
+    public function CrearNuevaNotaMedica($IdCita)
     {
         
         //$this->load->view('templates/header');
         //Cargar Información Ultima Nota del Paciente por Servicio
-        $result = $this->NotaMedica_Model->ConsultarUltimaNotaMedicaPorPaciente($IdPaciente,$IdServicio);
+        $Cita = $this->CitaServicio_Model->ConsultarCitaPorId($IdCita);
+     
+        $result = $this->NotaMedica_Model->ConsultarUltimaNotaMedicaPorPaciente($Cita->IdPaciente,$Cita->IdServicio);
         //Cargar Información del Paciente
         
-        $this->CargarInformacionPaciente($IdPaciente);
+        $paciente = $this->Paciente_Model->ConsultarPacientePorId($Cita->IdPaciente);
         
         
-    }    
-    
-        private function CargarInformacionPaciente($IdPaciente)
-    {
-        $paciente = $this->Paciente_Model->ConsultarPaciente($IdPaciente);
-            
-        // Asignar validaciones para el registro de un nuevo usuario
+        
+        //Cargar Vistas
         $this->form_validation->set_rules('NombrePaciente', 'NombrePaciente', 'required');
         
         if ($this->form_validation->run() == FALSE) 
@@ -62,6 +60,28 @@ class NotaMedica_Controller extends CI_Controller {
         {
             
         }
+        
+    }    
+    
+    private function CargarInformacionPaciente($IdPaciente)
+    {
+        $paciente = $this->Paciente_Model->ConsultarPacientePorId($IdPaciente);
+            
+        return $paciente;
+        // Asignar validaciones para el registro de un nuevo usuario
+//        $this->form_validation->set_rules('NombrePaciente', 'NombrePaciente', 'required');
+//        
+//        if ($this->form_validation->run() == FALSE) 
+//        {
+//                $data['paciente'] = $paciente;
+//                $data['title'] = 'Datos Paciente';
+//               // $this->load->view('templates/header',$data);
+//                $this->load->view('NotaMedica/SeccionPaciente',$data);
+//        }
+//        else 
+//        {
+//            
+//        }
     }
         
 }

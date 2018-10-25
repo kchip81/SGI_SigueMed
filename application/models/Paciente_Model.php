@@ -31,7 +31,7 @@ class Paciente_Model extends CI_Model {
         $this->IdPaciente = $row->IdPaciente;
         $this->Nombre = $row->Nombre;
     }
-    public function ConsultarPaciente($IdPaciente)
+    public function ConsultarPacientePorId($IdPaciente)
     {
         $condition = "IdPaciente =" . $IdPaciente;
         $this->db->select('*');
@@ -44,7 +44,7 @@ class Paciente_Model extends CI_Model {
         {
             $row = $query->row();
             $this->LoadRow($row);
-            return $query->row_array();
+            return $row;
         } 
         else 
         {
@@ -53,5 +53,11 @@ class Paciente_Model extends CI_Model {
         
         
     }
-    //put your code here
+    
+    public function ActualizarPaciente($IdPacienteUpdt, $PacienteUpdt)
+    {
+        $this->db->where('IdPaciente', $IdPacienteUpdt);
+       
+        return $this->db->update($this->table,$PacienteUpdt);
+    }
 }

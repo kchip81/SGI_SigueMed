@@ -23,11 +23,10 @@ class Usuario_Login extends CI_Controller {
         // Load form validation library
         $this->load->library('form_validation');
 
-        // Load session library
-        $this->load->library('session');
-
         // Load database
         $this->load->model('Login_Model');
+        //
+
     
         
     }
@@ -78,13 +77,16 @@ class Usuario_Login extends CI_Controller {
                 {
                 
                     $session_data = array(
-                    'username' => $result[0]->usuario,
-                    'IdPerfil' => $result[0]->IdPerfilUsuario,
+                    'username' => $result['usuario'],
+                    'IdPerfil' => $result['IdPerfilUsuario'],
                     'logged_in' => TRUE,
                     );
                     // Add user data in session
-                    $this->session->set_userdata('logged_in', $session_data);
-                    $this->load->view('main/admin_page');
+                    
+                    $this->session->set_userdata($session_data);
+                    redirect('Agenda/CitasHoy');
+                    
+                    
                 }
                 else
                 {

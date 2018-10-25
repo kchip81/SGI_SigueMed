@@ -37,7 +37,7 @@ public function read_user_information($username) {
     $query = $this->db->get();
 
     if ($query->num_rows() == 1) {
-    return $query->result_array();
+    return $query->row_array();
     } else {
     return false;
     }
