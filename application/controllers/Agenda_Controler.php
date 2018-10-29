@@ -82,6 +82,8 @@ class Agenda_Controler extends CI_Controller
 
         $this->form_validation->set_rules('Nombre', 'nombre', 'required');
         $this->form_validation->set_rules('Apellidos', 'apellidos', 'required');
+        $this->form_validation->set_rules('FechaNacimiento', 'Fecha de Nacimiento', 'required');
+        
 
         if ($this->form_validation->run() === FALSE)
         {
@@ -96,6 +98,10 @@ class Agenda_Controler extends CI_Controller
                     $data['Cita']= $Cita;
                     $this->load->view('Agenda/ConfirmarCita',$data);
                 }
+            }
+            else
+            {
+                //TODO: Manejo de error cuando el paciente de la cita no existe
             }
  
     
@@ -115,8 +121,15 @@ class Agenda_Controler extends CI_Controller
                 
                     $PacienteUpdt = array(
                         'Nombre'=>$this->input->post('Nombre'),
-                        'Apellidos' => $this->input->post('Apellidos')
-                    );
+                        'Apellidos' => $this->input->post('Apellidos'),
+                        'FechaNacimiento' => $this->input->post('FechaNacimiento'),
+                        'Calle' => $this->input->post('Calle'),
+                        'Colonia' => $this->input->post('Colonia'),
+                        'CP' => $this->input->post('CP'),
+                        'ViveCon' => $this->input->post('ViveCon'),
+                        'Escolaridad' => $this->input->post('Escolaridad'),
+                        'NumCelular' => $this->input->post('Celular')
+                        );
                 
                     $this->Paciente_Model->ActualizarPaciente($Paciente->IdPaciente, $PacienteUpdt);
                 }
@@ -126,6 +139,7 @@ class Agenda_Controler extends CI_Controller
             }
             if($action=='cancelar')
             {
+                //CancelarCita
                 $this->CitaServicio_Model->CancelarCita($IdCita);
                 
             }

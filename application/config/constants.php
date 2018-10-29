@@ -87,4 +87,15 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 
 /*
  * GLOBAL CONSTANTS SGI_SIGUEMED
+ * 
  */
+//PERFILES
+defined('ENFERMERIA')        OR define('ENFERMERIA', 1);
+defined('ADMINISTRACION')        OR define('ADMINISTRACION', 2);
+defined('MEDICO')        OR define('MEDICO', 3);
+
+//ESTATUS CITA
+defined('AGENDADA')        OR define('AGENDADA', 1);
+defined('CONFIRMADA')        OR define('CONFIRMADA', 2);
+defined('REGISTRADA')        OR define('REGISTRADA', 3);
+defined('CANCELADA')        OR define('CANCELADA', 4);

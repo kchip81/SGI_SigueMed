@@ -27,6 +27,13 @@ class NotaMedica_Model extends CI_Model {
         parent::__construct();
         $this->table = "NotaMedica";
         $this->load->database();
+        
+        $this->load->model('CitaServicio_Model');
+        $this->load->model('AntecedenteServicio_Model');
+        $this->load->model('AntecedenteNotaMedica_Model');
+        $this->load->helper('date');
+        $this->load->helper('array');
+        //$this->load->model ('Paciente_Model');
 
     }
     
@@ -57,7 +64,7 @@ class NotaMedica_Model extends CI_Model {
 
         if ($query->num_rows() == 1) 
         {
-            return $query->row_array();       
+            return $query->row()->IdUltimaNotaMedica;       
         } 
         else 
         {
@@ -76,9 +83,7 @@ class NotaMedica_Model extends CI_Model {
 
         if ($query->num_rows() == 1) 
         {
-            $row = $query->row();
-            $this->LoadRow($row);
-            return $query->row_array();
+            return $query->row();
         } 
         else 
         {
@@ -87,4 +92,46 @@ class NotaMedica_Model extends CI_Model {
         
     }
     
+    public function CrearNuevaNotaMedica($IdCita, $DatosSomatometria, $IdUltimaNotaMedica = FALSE)
+    {
+        //No tiene notas medias anteriores
+        $Cita = $this->CitaServicio_Model->ConsultarCitaPorId($IdCita);
+        
+        //Crear Nueva Nota con Datos Somatometria
+        $InsertArray = array(
+                'IdPaciente'=>$Cita->IdPaciente,
+                'IdServicio'=>$Cita->IdServicio,
+                'FechaNotaMedica'=>mdate('%Y-%m-%d'),
+                'PesoPaciente'=>$DatosSomatometria['PesoPaciente'],
+                'TallaPaciente'=>$DatosSomatometria['TallaPaciente'],
+                'PresionPaciente'=>$DatosSomatometria['PresionPaciente'],
+                'FrCardiacaPaciente'=>$DatosSomatometria['FrCardiacaPaciente'],
+                'FrRespiratoriaPaciente'=>$DatosSomatometria['FrRespiratoriaPaciente'],
+                'TemperaturaPaciente'=>$DatosSomatometria['TemperaturaPaciente']
+            );
+            
+        $this->db->insert('NotaMedica', $InsertArray);
+                    
+        $IdNuevaNota = $this->ConsultarUltimaNotaMedicaPorPaciente($Cita->IdPaciente, $Cita->IdServicio);
+                   
+            
+        if ($IdUltimaNotaMedica == FALSE)
+        {
+            $resultado = $this->AntecedenteNotaMedica_Model->CrearNuevosAntecedentesPorServicio($IdNuevaNota, $Cita->IdServicio);
+           
+        }
+
+        else
+        {
+            $resultado = $this->AntecedenteNotaMedica_Model->CopiarAntecedentesNotaMedica($IdNuevaNota,$IdUltimaNotaMedica);
+                      
+        }
+            
+        return $IdNuevaNota;    
+    }
+                    
+        
+        
+        
 }
+
