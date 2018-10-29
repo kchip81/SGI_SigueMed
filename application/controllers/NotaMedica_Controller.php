@@ -11,23 +11,71 @@
  *
  * @author SigueMed
  */
-class NotaMedica_Controller extends CI_Controller {
+
+require_once(dirname(__FILE__)."/Agenda_Controler.php");
+
+class NotaMedica_Controller extends Agenda_Controler {
     
     public function __construct() {
         parent::__construct();
         //Cargar herramientas para form
         $this->load->helper('form');
         $this->load->library('form_validation');
-        $this->load->library('session');
         $this->load->helper('url_helper');
         
         //Cargar Modelos usados por el Controlador para el manejo de las Notas Medicas
         $this->load->model('NotaMedica_Model');
         $this->load->model('Paciente_Model');
         $this->load->model('CitaServicio_Model');
+       
         
     }
     
+    
+    /*
+     * Function: RegistrarSomatometria
+     * Descripttion:La función mostrara la vista para Registrar los datos de Somatometria del paciente que agendo la Cita <$IdCita> y creará una nueva nota médica
+     */
+    public function RegistrarSomatometria($IdCita)
+    {
+        
+        
+        //Validaciones para los campos de Somatometria
+
+        $this->form_validation->set_rules('Peso', 'Peso', 'required');
+        $this->form_validation->set_rules('Talla', 'Talla', 'required');
+        $this->form_validation->set_rules('TA', 'T/A', 'required');
+        $this->form_validation->set_rules('Temperatura', 'Temperatura', 'required');
+        $this->form_validation->set_rules('FC', 'F/C', 'required');
+        $this->form_validation->set_rules('FR', 'FR', 'required');
+        if ($this->form_validation->run() === FALSE)
+        {
+            $Cita = $this->CitaServicio_Model->ConsultarCitaPorId($IdCita);
+            if (isset($Cita))
+            {
+                $Paciente = $this->Paciente_Model->ConsultarPacientePorId($Cita->IdPaciente);
+
+                if(isset($Paciente))
+                {
+                    $data['Paciente'] = $Paciente;
+                    $data['Cita']= $Cita;
+                    $this->load->view('NotaMedica/SeccionSomatometria',$data);
+                }
+            }
+            else
+            {
+                $data['errorMessage'] = "Error al cargar información del paciente";
+                $this->load->view('NotaMedica/SeccionSomatometria',$data);
+            }
+        }
+        else
+        {
+            $this->CrearNuevaNotaMedica($IdCita);
+            $this->CitaServicio_Model->RegistrarCita($IdCita);
+            
+            $this->CitasDeHoy();
+        }
+    }
     /*
      * Function: NuevaNotaMedica
      * Description: La función recibirá el Id del Paciente y del servicio para mostrar el formato NotaMedica.php para la creación de una nueva nota
@@ -38,51 +86,47 @@ class NotaMedica_Controller extends CI_Controller {
         //$this->load->view('templates/header');
         //Cargar Información Ultima Nota del Paciente por Servicio
         $Cita = $this->CitaServicio_Model->ConsultarCitaPorId($IdCita);
-     
-        $result = $this->NotaMedica_Model->ConsultarUltimaNotaMedicaPorPaciente($Cita->IdPaciente,$Cita->IdServicio);
-        //Cargar Información del Paciente
+        $IdUltimaNota = $this->NotaMedica_Model->ConsultarUltimaNotaMedicaPorPaciente($Cita->IdPaciente,$Cita->IdServicio);
         
-        $paciente = $this->Paciente_Model->ConsultarPacientePorId($Cita->IdPaciente);
-        
-        
-        
-        //Cargar Vistas
-        $this->form_validation->set_rules('NombrePaciente', 'NombrePaciente', 'required');
-        
-        if ($this->form_validation->run() == FALSE) 
+        if(!isset($Cita->IdNotaMedica))
         {
-                $data['paciente'] = $paciente;
-                $data['title'] = 'Datos Paciente';
-               // $this->load->view('templates/header',$data);
-                $this->load->view('NotaMedica/SeccionPaciente',$data);
-        }
-        else 
-        {
+            $DatosSomatometria = array(
+            'PesoPaciente'=>$this->input->post('Peso'),
+            'TallaPaciente'=> $this->input->post('Talla'),
+            'PresionPaciente'=> $this->input->post('TA'),
+            'FrCardiacaPaciente'=> $this->input->post('FC'),
+            'FrRespiratoriaPaciente'=> $this->input->post('FR'),
+            'TemperaturaPaciente'=> $this->input->post('Temperatura')
+             );
             
+            $NuevaNotaMedica = $this->NotaMedica_Model->CrearNuevaNotaMedica($IdCita,$DatosSomatometria,$IdUltimaNota);
+            $this->CitaServicio_Model->AsignarNotaMedica($IdCita, $NuevaNotaMedica);
         }
         
     }    
     
-    private function CargarInformacionPaciente($IdPaciente)
+    public function ElaborarNotaMedica($IdNotaMedica)
     {
-        $paciente = $this->Paciente_Model->ConsultarPacientePorId($IdPaciente);
-            
-        return $paciente;
-        // Asignar validaciones para el registro de un nuevo usuario
-//        $this->form_validation->set_rules('NombrePaciente', 'NombrePaciente', 'required');
-//        
-//        if ($this->form_validation->run() == FALSE) 
-//        {
-//                $data['paciente'] = $paciente;
-//                $data['title'] = 'Datos Paciente';
-//               // $this->load->view('templates/header',$data);
-//                $this->load->view('NotaMedica/SeccionPaciente',$data);
-//        }
-//        else 
-//        {
-//            
-//        }
-    }
         
+        $this->form_validation->set_rules('FR', 'FR', 'required');
+        
+        if ($this->form_validation->run() === FALSE)
+        {
+            //Cargar Datos Paciente
+            $NotaMedica = $this->NotaMedica_Model->ConsultarNotaMedicaPorId($IdNotaMedica);
+            $data['NotaMedica'] = $NotaMedica;
+            $data['Paciente'] = $this->Paciente_Model->ConsultarPacientePorId($NotaMedica->IdPaciente);
+            $data['Antecedentes'] = $this->AntecedenteNotaMedica_Model->ConsultarAntecedentesNota($IdNotaMedica);
+            
+            $this->load->view('NotaMedica/RegistrarNotaMedica', $data); 
+        }
+        else
+        {
+            
+        }
+           
+    }
+    
+   
 }
     

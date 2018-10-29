@@ -1,5 +1,7 @@
+
 <body>
-    <h2><?php $this->load->helper('url'); ?></h2>
+    
+    <?php $this->load->helper('url'); ?>
     <?php
         if (isset($errorMessage)) {
             echo "<div class='message'>";
@@ -8,13 +10,10 @@
         }
     ?>
     <?php echo validation_errors(); ?>
-    <h2>Cita:<?php echo $Cita->IdCitaServicio;?> Servicio: <?php echo $Cita->DescripcionServicio;?></h2>
-    <h3>Para el dia: <?php echo $Cita->DiaCita;?> y hora: <?php echo $Cita->HoraCita; ?></h3>
     
-  <?php echo form_open('Agenda_Controler/ConfirmarCita/'.$Cita->IdCitaServicio); ?>
-
-    <!--Div Paciente-->
-    <div>
+    <?php echo form_open('NotaMedica_Controller/ElaborarNotaMedica/'.$NotaMedica->IdNotaMedica); ?>
+    
+     <div>
         <label for="Nombre">Nombre</label>
         <input type="text" name="Nombre" id="Nombre" value="<?php echo $Paciente->Nombre; ?>"/>
 
@@ -55,9 +54,44 @@
         <input type="text" name="Celular" value="<?php echo $Paciente->NumCelular; ?>"/>
         
     </div>
-   
+    
+    <!--Div Somatometria-->
+    <div>
+        
+    </div>
+    
+    <!--Div Antecedentes -->
+    
+    <div>
+         <?php
+    
+    if ($Antecedentes!=FALSE)
+    {
+        foreach ($Antecedentes as $AntecedenteNota)
+        {
+            echo "<label for='Antecendete".$AntecedenteNota['IdAntecedente']."'>".$AntecedenteNota['DescripcionAntecedente']."</label></br>";
+            echo "<input type='text' name='Antecedente".$AntecedenteNota['IdAntecedente']." id='Antecedente".$AntecedenteNota['IdAntecedente']."' value='".$AntecedenteNota['DescripcionAntecedenteNotaMedica']."'/></br>";
 
-    <button type="submit" name="action" value="confirmar">Confirmar</button>
-    <button type="submit" name="action" value="cancelar">Cancelar</button>
-   </form>
+            // put your code here
+        }
+    }
+    else
+    {
+        echo "No carga antecedentes";
+        echo $NotaMedica->IdNotaMedica;
+        echo count($Antecedentes);
+    }
+    
+    ?>
+    </div>
+    
+    <!--Div Botones-->
+    <div>
+        <button type="submit" name="action" value="guardar">Guardar</button>
+        <button type="submit" name="action" value="cancelar">Cancelar</button>
+    </div>
+   
+    
+    </form>
 </body>
+

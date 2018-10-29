@@ -19,7 +19,7 @@ class CitaServicio_Model extends CI_Model
     public function __construct() {
         parent::__construct();
         $this->table = "CitaServicio";
-        $this->strSelectALL = $this->table.'.IdCitaServicio, '.$this->table.'.IdPaciente,'.$this->table.'.IdServicio,DiaCita,HoraCita,MesCita,AnioCita,'.$this->table.'.IdStatusCita';
+        
         $this->load->database();
         
     }
@@ -34,7 +34,7 @@ class CitaServicio_Model extends CI_Model
         
         
         
-        $this->db->select($this->strSelectALL.', DescripcionServicio, Nombre, Apellidos, DescripcionEstatusCita');
+        $this->db->select($this->table.'.*, DescripcionServicio, Nombre, Apellidos, DescripcionEstatusCita');
         $this->db->from($this->table.',Servicio,Paciente, CatalogoEstatusCita');
         // JOIN
         $this->db->where($this->table.'.IdServicio = Servicio.IdServicio');
@@ -69,7 +69,7 @@ class CitaServicio_Model extends CI_Model
         
         
         
-        $this->db->select($this->strSelectALL.',DescripcionServicio');
+        $this->db->select($this->table.'.* ,DescripcionServicio');
 
         $this->db->from($this->table.',Servicio,Paciente');
         // JOIN
@@ -93,7 +93,7 @@ class CitaServicio_Model extends CI_Model
     public function ConsultarCitaPorId($IdCita)
     {
          
-        $this->db->select($this->strSelectALL.',DescripcionServicio');
+        $this->db->select($this->table.'.*,DescripcionServicio');
         $this->db->from($this->table.',Servicio');
         //JOIN
         $this->db->where($this->table.'.IdServicio = Servicio.IdServicio');
@@ -108,7 +108,7 @@ class CitaServicio_Model extends CI_Model
     
     public function ConfirmarCita($IdCita)
     {
-        $data = array('IdStatusCita' => 2);
+        $data = array('IdStatusCita' => CONFIRMADA);
         $this->db->where('IdCitaServicio', $IdCita);
        
         return $this->db->update($this->table,$data);
@@ -117,14 +117,32 @@ class CitaServicio_Model extends CI_Model
     
     public function CancelarCita($IdCita)
     {
-        $data = array('IdStatusCita'=>3);
+        $data = array('IdStatusCita'=>CANCELADA);
         
         $this->db->where('IdCitaServicio', $IdCita);
        
         return $this->db->update($this->table,$data);
         
     }
-
     
-//put your code here
+    public function RegistrarCita($IdCita)
+    {
+        $data = array('IdStatusCita'=>REGISTRADA);
+        
+        $this->db->where('IdCitaServicio', $IdCita);
+       
+        return $this->db->update($this->table,$data);
+    }
+
+    public function AsignarNotaMedica($IdCita,$IdNotaMedica)
+    {
+        
+        $data = array('IdNotaMedica'=>$IdNotaMedica);
+        
+        $this->db->where('IdCitaServicio', $IdCita);
+       
+        return $this->db->update($this->table,$data);
+    }
+    
+
 }

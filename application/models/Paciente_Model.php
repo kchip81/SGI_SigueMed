@@ -14,10 +14,8 @@
 class Paciente_Model extends CI_Model {
     
     private $table;
-    public $IdPaciente;
-    public $Nombre;
-    public $Apellidos;
-    
+  
+
     
     public function __construct() {
         parent::__construct();
@@ -25,12 +23,8 @@ class Paciente_Model extends CI_Model {
         $this->load->database();
         
     }
-    
-    private function LoadRow($row)
-    {
-        $this->IdPaciente = $row->IdPaciente;
-        $this->Nombre = $row->Nombre;
-    }
+      
+   
     public function ConsultarPacientePorId($IdPaciente)
     {
         $condition = "IdPaciente =" . $IdPaciente;
@@ -43,7 +37,7 @@ class Paciente_Model extends CI_Model {
         if ($query->num_rows() == 1) 
         {
             $row = $query->row();
-            $this->LoadRow($row);
+            
             return $row;
         } 
         else 
