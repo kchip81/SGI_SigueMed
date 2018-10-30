@@ -28,11 +28,6 @@ class CatalogoDiagnosticos_Model extends CI_Model {
 
     }
     
-    private function LoadRow($row)
-    {
-        $this->IdDiagnostico = $row->IdDiagnostico;
-        $this->DescripcionDiagnostico = $row->DescripcionDiagnostico;
-    }
     
     public function ConsultarDiagnosticoPorId($IdDiagnostico)
     {
