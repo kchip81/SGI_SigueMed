@@ -122,7 +122,20 @@ class NotaMedica_Controller extends Agenda_Controler {
         }
         else
         {
+            $DatosNotaMedica = array(
+                'PesoPaciente'=>$this->input->post('Peso'),
+                'TallaPaciente'=> $this->input->post('Talla'),
+                'PresionPaciente'=> $this->input->post('TA'),
+                'FrCardiacaPaciente'=> $this->input->post('FC'),
+                'FrRespiratoriaPaciente'=> $this->input->post('FR'),
+                'TemperaturaPaciente'=> $this->input->post('Temperatura')
+             );
             
+            $Antecedentes = $this->AntecedenteNotaMedica_Model->ConsultarAntecedentesNota($IdNotaMedica);
+            foreach($Antecedentes as $Antecedente)
+            {
+                
+            }
         }
            
     }
