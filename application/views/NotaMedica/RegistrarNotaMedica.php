@@ -57,7 +57,25 @@
     
     <!--Div Somatometria-->
     <div>
+        <label for="Peso">Peso</label>
+        <input type="text" name="Peso" id="Peso" value="<?php echo $NotaMedica->PesoPaciente; ?>" />Kg.
+
+        <label for="Talla">Talla</label>
+        <input type="text" name="Talla" id="Talla" value="<?php echo $NotaMedica->TallaPaciente; ?>"/>mts.
         
+        <label for="TA">T/A</label>
+        <input type="text" name="TA" id="TA" value="<?php echo $NotaMedica->PresionPaciente; ?>"/>Mm/Hg.
+        
+        <label for="Temperatura">T</label>
+        <input type="text" name="Temperatura" id="Temperatura" value="<?php echo $NotaMedica->TemperaturaPaciente; ?>"/>°C.
+        
+        <label for="FC">F/C</label>
+        <input type="text" name="FC" id="FC" value="<?php echo $NotaMedica->FrCardiacaPaciente; ?>"/>L/m.
+        
+        <label for="FR">F/R</label>
+        <input type="text" name="FR" id="FR" value="<?php echo $NotaMedica->FrRespiratoriaPaciente; ?>"/>R/m.
+        
+         
     </div>
     
     <!--Div Antecedentes -->
