@@ -29,8 +29,7 @@ class DiagnosticoNotaMedica_Model extends CI_Model {
 
     }
     
- 
-    
+    //Función Consultar Diagnostico Por ID
     public function ConsultarDiagnosticoPorId($IdDiagnostico)
     {
         $condition = "IdDiagnostico =" . $IdDiagnostico;
