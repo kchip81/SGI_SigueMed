@@ -28,7 +28,8 @@ class DiagnosticoNotaMedica_Model extends CI_Model {
         $this->load->database();
 
     }
-   
+    
+ 
     
     public function ConsultarDiagnosticoPorId($IdDiagnostico)
     {
