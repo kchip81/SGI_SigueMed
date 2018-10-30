@@ -7,27 +7,29 @@
  */
 
 /**
- * Description of CatalogoDiagnosticos_Model
+ * Description of DiagnosticoNotaMedica_Model
  *
  * @author SnakcSalas
  */
-class CatalogoDiagnosticos_Model extends CI_Model {
+class DiagnosticoNotaMedica_Model extends CI_Model {
     
-    //Atributos CatalogoDiagnostico
+    //Atributos DiagnosticoNotaMedica
     private $table;
+    public $IdNotaMedica;
     public $IdDiagnostico;
-    public $DescripcionDiagnostico;
+    public $ObservacionesDiagnostico;
             
     /*
      * 
      */
     public function __construct() {
         parent::__construct();
-        $this->table = "CatalogoDiagnosticos";
+        $this->table = "DiagnosticoNotaMedica";
         $this->load->database();
 
     }
     
+ 
     
     public function ConsultarDiagnosticoPorId($IdDiagnostico)
     {
